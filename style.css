@@ -1,0 +1,87 @@
+body {
+
+    background-color:#fff;
+    
+    margin: 0px auto;
+    
+    }
+    .calbody{
+    
+        background: #097C9B;
+
+        border: 1px solid #ff0;
+        
+        padding: 10px;
+        
+        margin-left: 450px;
+        
+        min-width: 27.4em;
+        
+        max-width: 27.4em;
+    }
+
+    @media only screen and (max-width:500px){
+
+    
+    
+    .calbody{
+    
+    background: red;
+    
+    border: 1px solid #ff0;
+    
+    padding: 10px;
+    
+    margin-top: 40%;
+    margin-left: 7%;
+    margin-right: 80%;
+    min-width: 27.4em;
+    
+    max-width: 27.4em;
+    
+    }
+}
+    #lcd{
+
+        text-align: right;
+        
+        width: 23em;
+        
+        height: 40px;
+        
+        font-size: 18px;
+        
+        }
+        
+        #lcdu{
+        
+        color: grey;
+        
+        text-align: right;
+        
+        width: 27.6em;
+        
+        height: 35px;
+        
+        font-size: 15px;
+        
+        }
+        
+        button{
+        
+        background-color: #fff;
+        
+        width: 80px;
+        height: 60px;
+
+font-size: 20px;
+
+border: 1px solid #097C9B;
+
+}
+
+button:hover{
+
+background-color: red;
+
+}
