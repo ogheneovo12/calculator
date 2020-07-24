@@ -1,10 +1,7 @@
 var firstnumber;
-
 var secondnumber;
-
 var result;
-
-var operations;
+var operation;
 
 function numone() {
   if (
