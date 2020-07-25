@@ -23,13 +23,14 @@ function addListEventListener(elements, handler = () => {}, event = "click") {
 function updateTopOutput(value) {
   topOutput.value += output.value + value;
 }
+const isSingleOperator =()=> (/^([\w\d]+?)([+\*/-]{1})$/g).test(topOutput.value)
+
 function checkIf_changeOperation(newOperator) {
   const lastOperation = topOutput.value[topOutput.value.length - 1];
-  if (operatorsList.includes(lastOperation) && lastOperation !== newOperator) {
+  if (operatorsList.includes(lastOperation) && lastOperation !== newOperator || isSingleOperator()) {
     operation = newOperator;
     topOutput.value =
       topOutput.value.slice(0, topOutput.value.length - 1) + operation;
-      console.log(topOutput.value.slice(0, topOutput.value.length - 1))
     return true;
   }
 }
@@ -71,13 +72,16 @@ const handleOperatorClick =  e => {
    * TODO->where to place this if condition so that it doesnt work for = and c,
    *  and to avoid extra logical check
   */
-  if (operatorIspressed && getConstraint() && e.target.value !="c" && e.target.value !="=" ) {
+  if (getConstraint() && e.target.value !="c" && e.target.value !="=" ) {
     //if a new operator is clicked then change previous operation
     checkIf_changeOperation(e.target.value);
     return;
   }
 
-
+if(isSingleOperator() && e.target.value !="c" && e.target.value !="="){
+      checkIf_changeOperation(e.target.value)
+      return
+}
 //print to top
 updateTopOutput(e.target.value);
 
@@ -135,3 +139,4 @@ function clear() {
 addListEventListener(operators, handleOperatorClick);
 //FOR BUTTONS
 addListEventListener(buttons, handleButtonClick);
+//background: linear-gradient(90deg,transparent,hsla(0,0%,100%,.3),transparent)
