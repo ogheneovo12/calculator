@@ -10,7 +10,8 @@ let firstNumber = 0,
   result = 0,
   operation = "";
 const operatorsList = ["+", "*", "/", "%", "-", "^", "=", "c", "root"];
-const getConstraint = ()=> output.value == result
+const getConstraint = () => output.value == result;
+
 function addListEventListener(elements, handler = () => {}, event = "click") {
   if (!elements) {
     throw Error("no element was added");
@@ -18,18 +19,35 @@ function addListEventListener(elements, handler = () => {}, event = "click") {
   }
   elements.forEach((elem) => elem.addEventListener(event, handler));
 }
+
 function updateTopOutput(value) {
-    if(isAnswered){
-        topOutput.value += output.value
-        return
-    }
-  if (!getConstraint()) {
-    topOutput.value += output.value + value;
+  topOutput.value += output.value + value;
+}
+function checkIf_changeOperation(newOperator) {
+  const lastOperation = topOutput.value[topOutput.value.length - 1];
+  if (operatorsList.includes(lastOperation) && lastOperation !== newOperator) {
+    operation = newOperator;
+    topOutput.value =
+      topOutput.value.slice(0, topOutput.value.length - 1) + operation;
+      console.log(topOutput.value.slice(0, topOutput.value.length - 1))
+    return true;
   }
 }
-//setEvent handler
-handleButtonClick = function (e) {
+
+function checkIf_startAgain(value) {
+  if (isAnswered) {
+    //clear memory
+    clear();
+    //start a new session
+    isAnswered = false;
+    output.value = value;
+  }
+}
+
+//Event handler
+const handleButtonClick = e => {
   e.preventDefault();
+  checkIf_startAgain(e.target.value);
   if (output.value == "0" || operatorIspressed) {
     output.value = e.target.value;
   } else {
@@ -38,43 +56,60 @@ handleButtonClick = function (e) {
   operatorIspressed = false;
 };
 
-handleOperatorClick = function (e) {
-    e.preventDefault()
-    
-    operatorIspressed =  true;
-    console.log(operatorIspressed)
+const handleOperatorClick =  e => {
+  e.preventDefault();
+  //just house keeping check
   if (!operatorsList.includes(e.target.value)) {
     return;
   }
-  updateTopOutput(e.target.value);
-  if (e.target.value == "=") {
+ 
+  //signals that an operator has been pressed
+  operatorIspressed = true;
+/**
+   * prevents operator from working on result multiple times, when clicked intermitently
+   * meaning a single operator shouldn't be clicked more than once
+   * TODO->where to place this if condition so that it doesnt work for = and c,
+   *  and to avoid extra logical check
+  */
+  if (operatorIspressed && getConstraint() && e.target.value !="c" && e.target.value !="=" ) {
+    //if a new operator is clicked then change previous operation
+    checkIf_changeOperation(e.target.value);
+    return;
+  }
+
+
+//print to top
+updateTopOutput(e.target.value);
+
+ if (e.target.value == "=") {
     calculate();
     isAnswered = true;
     return;
   }
-  
-  if (e.target.value == "c") {
-    console.log("hey");
+  else if (e.target.value == "c") {
     clear();
     return;
   }
-
- 
-  if ((!!firstNumber && !!output.value) && !(output.value == result)) {
+  if (!!firstNumber && !!output.value) {
     calculate();
     return;
   }
-
+firstNumber = parseInt(output.value);
+ if(e.target.value == "^"){
+   operation = "**"
+   return
+ }
   operation = e.target.value;
-  firstNumber = parseInt(document.lcdform.lcds.value);
-  
   
 };
+
+
 function calculate() {
+  //dont do anything if no operation was selected
   if (!!operation) {
     secondNumber = output.value;
-    if(result){
-        firstNumber =result;
+    if (result) {
+      firstNumber = result;
     }
     result = eval(
       `${parseInt(firstNumber)} ${operation} ${parseInt(secondNumber)}`
@@ -82,14 +117,20 @@ function calculate() {
     output.value = result;
   }
 }
+/**
+ * Function is meant to clear memory and start calculator from fres
+ */
 function clear() {
-  topOutput.value = "";
-  output.value = "0";
-  result = 0;
-  firstNumber = 0;
-  secondNumber = 0;
+     topOutput.value = "";
+     output.value = "0";
+     result = 0;
+     firstNumber = 0;
+     secondNumber = 0;
+     operation = ""
 }
+
 //addEventListener
+
 //FOR OPERATORS
 addListEventListener(operators, handleOperatorClick);
 //FOR BUTTONS
