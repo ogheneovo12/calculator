@@ -63,6 +63,11 @@ const handleOperatorClick =  e => {
   if (!operatorsList.includes(e.target.value)) {
     return;
   }
+
+  if(isAnswered){
+    isAnswered = false
+  }
+  //allows change operator on a single operator 
   if(operatorIspressed && isSingleOperator() && e.target.value !="c" && e.target.value !="="){
     checkIf_changeOperation(e.target.value)
     return
