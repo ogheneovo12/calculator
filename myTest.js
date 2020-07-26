@@ -63,7 +63,10 @@ const handleOperatorClick =  e => {
   if (!operatorsList.includes(e.target.value)) {
     return;
   }
- 
+  if(operatorIspressed && isSingleOperator() && e.target.value !="c" && e.target.value !="="){
+    checkIf_changeOperation(e.target.value)
+    return
+}
   //signals that an operator has been pressed
   operatorIspressed = true;
 /**
@@ -78,10 +81,7 @@ const handleOperatorClick =  e => {
     return;
   }
 
-if(isSingleOperator() && e.target.value !="c" && e.target.value !="="){
-      checkIf_changeOperation(e.target.value)
-      return
-}
+
 //print to top
 updateTopOutput(e.target.value);
 
@@ -140,3 +140,7 @@ addListEventListener(operators, handleOperatorClick);
 //FOR BUTTONS
 addListEventListener(buttons, handleButtonClick);
 //background: linear-gradient(90deg,transparent,hsla(0,0%,100%,.3),transparent)
+const isStupid = 0,
+      isMoreStupid = '[]',
+      validateStupidity = () => isStupid == isMoreStupid;
+      console.log(validateStupidity()) //->true
