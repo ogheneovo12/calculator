@@ -140,7 +140,3 @@ addListEventListener(operators, handleOperatorClick);
 //FOR BUTTONS
 addListEventListener(buttons, handleButtonClick);
 //background: linear-gradient(90deg,transparent,hsla(0,0%,100%,.3),transparent)
-const isStupid = 0,
-      isMoreStupid = '[]',
-      validateStupidity = () => isStupid == isMoreStupid;
-      console.log(validateStupidity()) //->true
