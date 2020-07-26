@@ -11,7 +11,7 @@ let firstNumber = 0,
   operation = "";
 const operatorsList = ["+", "*", "/", "%", "-", "^", "=", "c", "root"];
 const getConstraint = () => output.value == result;
-
+const isTerminalOperator = value => value =="c" || value == "="
 function addListEventListener(elements, handler = () => {}, event = "click") {
   if (!elements) {
     throw Error("no element was added");
@@ -63,12 +63,13 @@ const handleOperatorClick =  e => {
   if (!operatorsList.includes(e.target.value)) {
     return;
   }
-
+  //sets iSanswered status to false if an operator is clicked, after a calculation session has ended
   if(isAnswered){
     isAnswered = false
   }
+  
   //allows change operator on a single operator 
-  if(operatorIspressed && isSingleOperator() && e.target.value !="c" && e.target.value !="="){
+  if(operatorIspressed && isSingleOperator() && !isTerminalOperator(e.target.value)){
     checkIf_changeOperation(e.target.value)
     return
 }
@@ -77,10 +78,9 @@ const handleOperatorClick =  e => {
 /**
    * prevents operator from working on result multiple times, when clicked intermitently
    * meaning a single operator shouldn't be clicked more than once
-   * TODO->where to place this if condition so that it doesnt work for = and c,
    *  and to avoid extra logical check
   */
-  if (getConstraint() && e.target.value !="c" && e.target.value !="=" ) {
+  if (getConstraint() && !isTerminalOperator(e.target.value)) {
     //if a new operator is clicked then change previous operation
     checkIf_changeOperation(e.target.value);
     return;
